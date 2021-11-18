@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Fitness App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      // routes: Routes.getroutes,
+      routes: Routes.getroutes,
       home: FutureBuilder(
           future: jwtOrEmpty,
           builder: (context, snapshot) {

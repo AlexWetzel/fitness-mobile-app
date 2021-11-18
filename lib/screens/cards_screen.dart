@@ -209,7 +209,7 @@ class _MainPageState extends State<MainPage> {
                     onPressed: ()
                     {
                       storage.write(key: "jwt", value: "");
-                      // Navigator.pushNamed(context, '/login');
+                      Navigator.pushNamed(context, '/login');
                     },
                     color:Colors.brown[50],
                     textColor: Colors.black,

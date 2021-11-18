@@ -109,39 +109,43 @@ class _MainPageState extends State<MainPage> {
                     // String url = 'https://cop4331-10.herokuapp.com/api/login';
                     String url = 'http://10.0.2.2:5000/api/login';
                     // String url = 'https://cop4331-7.herokuapp.com/api/login';
-                    String ret = await CardsData.getJson(url, payload);
+                    String? ret = await CardsData.getJson(url, payload);
                     jsonObject = json.decode(ret);
                     // userId = jsonObject["id"];
                     // print(jsonObject["accessToken"]);
                     var jwt = jsonObject["accessToken"];
                     storage.write(key: "jwt", value: jwt);
 
-                    jwt = jwt.split(".");
-                    var pl = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
-                    print(pl);
+                    if(jwt == null)
+                    {
+                      newMessageText = "Incorrect Login/Password";
+                      changeText();
+                    }
+                    else
+                    {
+                      jwt = jwt.split(".");
+                      var userInfo = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
+                      print(userInfo);
 
+
+
+                      Navigator.pushNamed(context, '/cards');
+                      // GlobalData.userId = userId;
+                      // GlobalData.firstName = jsonObject["firstName"];
+                      // GlobalData.lastName = jsonObject["lastName"];
+                      // GlobalData.loginName = loginName;
+                      // GlobalData.password = password;
+                      // Navigator.pushNamed(context, '/cards');
+                    }
                   }
                   catch(e)
                   {
-                    newMessageText = "Something went wrong...";
-                    // newMessageText = e.toString();
+                    // newMessageText = "Something went wrong...";
+                    newMessageText = e.toString();
                     changeText();
                     return;
                   }
-                  if( userId <= 0 )
-                  {
-                    newMessageText = "Incorrect Login/Password";
-                    changeText();
-                  }
-                  else
-                  {
-                    GlobalData.userId = userId;
-                    GlobalData.firstName = jsonObject["firstName"];
-                    GlobalData.lastName = jsonObject["lastName"];
-                    GlobalData.loginName = loginName;
-                    GlobalData.password = password;
-                    Navigator.pushNamed(context, '/cards');
-                  }
+
                 },
                     color:Colors.brown[50],
                     textColor: Colors.black,
