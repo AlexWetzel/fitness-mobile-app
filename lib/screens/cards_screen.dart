@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fitness_mobile_app/main.dart';
 import 'package:fitness_mobile_app/utils/get_api.dart';
 import 'package:fitness_mobile_app/screens/login_screen.dart';
 import 'dart:convert';
@@ -207,7 +208,8 @@ class _MainPageState extends State<MainPage> {
                     child: Text('Logout',style: TextStyle(fontSize: 14 ,color:Colors.black)),
                     onPressed: ()
                     {
-                      Navigator.pushNamed(context, '/login');
+                      storage.write(key: "jwt", value: "");
+                      // Navigator.pushNamed(context, '/login');
                     },
                     color:Colors.brown[50],
                     textColor: Colors.black,

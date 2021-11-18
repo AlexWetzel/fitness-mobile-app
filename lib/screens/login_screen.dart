@@ -1,3 +1,4 @@
+import 'package:fitness_mobile_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_mobile_app/utils/get_api.dart';
 import 'dart:convert';
@@ -105,15 +106,25 @@ class _MainPageState extends State<MainPage> {
                   var jsonObject;
                   try
                   {
-                    String url = 'https://cop4331-10.herokuapp.com/api/login';
+                    // String url = 'https://cop4331-10.herokuapp.com/api/login';
+                    String url = 'http://10.0.2.2:5000/api/login';
+                    // String url = 'https://cop4331-7.herokuapp.com/api/login';
                     String ret = await CardsData.getJson(url, payload);
                     jsonObject = json.decode(ret);
-                    userId = jsonObject["id"];
+                    // userId = jsonObject["id"];
+                    // print(jsonObject["accessToken"]);
+                    var jwt = jsonObject["accessToken"];
+                    storage.write(key: "jwt", value: jwt);
+
+                    jwt = jwt.split(".");
+                    var pl = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
+                    print(pl);
+
                   }
                   catch(e)
                   {
                     newMessageText = "Something went wrong...";
-                    // newMessageText = e.message;
+                    // newMessageText = e.toString();
                     changeText();
                     return;
                   }
