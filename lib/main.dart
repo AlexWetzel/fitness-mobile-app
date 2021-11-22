@@ -6,19 +6,18 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:convert' show json, base64, ascii;
 
-// const SERVER_IP = 'http://192.168.1.167:5000';
-final storage = FlutterSecureStorage();
+const storage = FlutterSecureStorage();
 
 void main() {
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   Future<String> get jwtOrEmpty async {
     // print("test");
-    var jwt = await storage.read(key:"jwt");
-    if(jwt == null) return "";
+    var jwt = await storage.read(key: "jwt");
+    if (jwt == null) return "";
     // print(jwt);
     return jwt;
   }
@@ -26,55 +25,50 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fitness App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
+        title: 'Fitness App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
         ),
-      ),
-      routes: Routes.getroutes,
-
-
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Fitness App'),
-
-        ),
-        body:  FutureBuilder(
-            future: jwtOrEmpty,
+        routes: Routes.getroutes,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Fitness App'),
+          ),
+          body: FutureBuilder(
+              future: jwtOrEmpty,
 
               // This builder sees if there's a token, and renders the appropriate page
-            builder: (context, snapshot) {
+              builder: (context, snapshot) {
                 // print(snapshot.data);
-              if(!snapshot.hasData) return CircularProgressIndicator();
-              if(snapshot.data != "") {
-                var str = snapshot.data.toString();
-                var jwt = str.split(".");
+                if (!snapshot.hasData) return CircularProgressIndicator();
+                if (snapshot.data != "") {
+                  var str = snapshot.data.toString();
+                  var jwt = str.split(".");
 
-                if(jwt.length != 3) {
-                  return LoginScreen();
-                } else {
-
-                  var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
-                  // print(payload);
-
-                  // Check if the token is expired
-                  if(DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
-
-                  return CardsScreen();
-                  } else {
-
+                  if (jwt.length != 3) {
                     return LoginScreen();
+                  } else {
+                    var payload = json.decode(
+                        ascii.decode(base64.decode(base64.normalize(jwt[1]))));
+
+                    // Check if the token is expired
+                    if (DateTime.fromMillisecondsSinceEpoch(
+                            payload["exp"] * 1000)
+                        .isAfter(DateTime.now())) {
+                      return CardsScreen();
+                    } else {
+                      return LoginScreen();
+                    }
                   }
+                } else {
+                  return LoginScreen();
                 }
-              } else {
-                return LoginScreen();
-              }
-            }
-            ),
-      )// home:
-    );
+              }),
+        ) // home:
+        );
   }
 }
