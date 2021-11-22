@@ -28,36 +28,53 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fitness App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
-      routes: Routes.getroutes,
-      home: FutureBuilder(
-          future: jwtOrEmpty,
-          builder: (context, snapshot) {
-            if(!snapshot.hasData) return CircularProgressIndicator();
-            if(snapshot.data != "") {
-              var str = snapshot.data.toString();
-              var jwt = str.split(".");
-
-              if(jwt.length != 3) {
-                return LoginScreen();
-              } else {
-
-                var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
-                print(payload);
-                // if(DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
-
-                //   return CardsScreen();
-                // } else {
-
-                //   return LoginScreen();
-                // }
-                return CardsScreen();
-              }
-            } else {
-              return LoginScreen();
-            }
-          }
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
       ),
+      routes: Routes.getroutes,
+
+
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Fitness App'),
+
+        ),
+        body:  FutureBuilder(
+            future: jwtOrEmpty,
+
+              // This builder sees if there's a token, and renders the appropriate page
+            builder: (context, snapshot) {
+                // print(snapshot.data);
+              if(!snapshot.hasData) return CircularProgressIndicator();
+              if(snapshot.data != "") {
+                var str = snapshot.data.toString();
+                var jwt = str.split(".");
+
+                if(jwt.length != 3) {
+                  return LoginScreen();
+                } else {
+
+                  var payload = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
+                  // print(payload);
+
+                  // Check if the token is expired
+                  if(DateTime.fromMillisecondsSinceEpoch(payload["exp"]*1000).isAfter(DateTime.now())) {
+
+                  return CardsScreen();
+                  } else {
+
+                    return LoginScreen();
+                  }
+                }
+              } else {
+                return LoginScreen();
+              }
+            }
+            ),
+      )// home:
     );
   }
 }

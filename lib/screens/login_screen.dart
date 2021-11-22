@@ -102,12 +102,12 @@ class _MainPageState extends State<MainPage> {
                   changeText();
                   String payload = '{"login":"' + loginName.trim() + '","password":"' +
                       password.trim() + '"}';
-                  var userId = -1;
+                  // var userId = -1;
                   var jsonObject;
                   try
                   {
                     // String url = 'https://cop4331-10.herokuapp.com/api/login';
-                    String url = 'http://10.0.2.2:5000/api/login';
+                    String url = 'http://10.0.2.2:5000/api/login'; // localhost
                     // String url = 'https://cop4331-7.herokuapp.com/api/login';
                     String? ret = await CardsData.getJson(url, payload);
                     jsonObject = json.decode(ret);
@@ -125,11 +125,17 @@ class _MainPageState extends State<MainPage> {
                     {
                       jwt = jwt.split(".");
                       var userInfo = json.decode(ascii.decode(base64.decode(base64.normalize(jwt[1]))));
-                      print(userInfo);
+                      // print(userInfo);
 
 
 
-                      Navigator.pushNamed(context, '/cards');
+                      Navigator.pushNamed(
+                          context,
+                          '/cards',
+                          // arguments: <String, String>{
+                          //   'userId': userInfo["userId"],
+                          // }
+                      );
                       // GlobalData.userId = userId;
                       // GlobalData.firstName = jsonObject["firstName"];
                       // GlobalData.lastName = jsonObject["lastName"];
