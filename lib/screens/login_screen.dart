@@ -37,7 +37,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String message = "This is a message", newMessageText = '';
+  String message = '', newMessageText = '';
   String loginName = '', password = '';
 
   @override

@@ -29,15 +29,15 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.red,
             foregroundColor: Colors.black,
           ),
         ),
         routes: Routes.getroutes,
         home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Fitness App'),
-          ),
+          // appBar: AppBar(
+          //   title: const Text('Fitness App'),
+          // ),
           body: FutureBuilder(
               future: jwtOrEmpty,
 
