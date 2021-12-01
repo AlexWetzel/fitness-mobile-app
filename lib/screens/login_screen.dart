@@ -9,6 +9,7 @@ class GlobalData {
   static String? lastName;
   static String? loginName;
   static String? password;
+  static bool verified = false;
 }
 
 class LoginScreen extends StatefulWidget {
@@ -95,13 +96,11 @@ class _MainPageState extends State<MainPage> {
                   // String url = 'https://cop4331-7.herokuapp.com/api/login';
                   String? ret = await CardsData.getJson(url, payload);
                   jsonObject = json.decode(ret);
-                  // userId = jsonObject["id"];
-                  // print(jsonObject["accessToken"]);
-                  var jwt = jsonObject["accessToken"];
+                  var jwt = jsonObject["jwtToken"]["accessToken"];
                   storage.write(key: "jwt", value: jwt);
 
                   if (jwt == null) {
-                    newMessageText = "Incorrect Login/Password";
+                    newMessageText = "Authorization failed";
                     changeText();
                   } else {
                     jwt = jwt.split(".");
@@ -112,19 +111,9 @@ class _MainPageState extends State<MainPage> {
                     Navigator.pushNamed(
                       context,
                       '/cards',
-                      // arguments: <String, String>{
-                      //   'userId': userInfo["userId"],
-                      // }
                     );
-                    // GlobalData.userId = userId;
-                    // GlobalData.firstName = jsonObject["firstName"];
-                    // GlobalData.lastName = jsonObject["lastName"];
-                    // GlobalData.loginName = loginName;
-                    // GlobalData.password = password;
-                    // Navigator.pushNamed(context, '/cards');
                   }
                 } catch (e) {
-                  // newMessageText = "Something went wrong...";
                   newMessageText = e.toString();
                   changeText();
                   return;
