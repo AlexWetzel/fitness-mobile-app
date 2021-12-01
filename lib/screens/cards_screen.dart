@@ -216,15 +216,12 @@ class _MainPageState extends State<MainPage> {
 
                           if (ex["CardioTime"] == null) {
                             // Strength
-                            for (int i = 0; i < 5; i++) {
-                              newStrengthList
-                                  .add(StrengthExercise.fromJson(ex));
-                            }
+
+                            newStrengthList.add(StrengthExercise.fromJson(ex));
                           } else {
                             // Cardio
-                            for (int i = 0; i < 5; i++) {
-                              newCardioList.add(CardioExercise.fromJson(ex));
-                            }
+
+                            newCardioList.add(CardioExercise.fromJson(ex));
                           }
                           Exercise e = Exercise.fromJson(ex);
                           // print(e);
@@ -235,8 +232,7 @@ class _MainPageState extends State<MainPage> {
                       color: Colors.grey[20],
                       textColor: Colors.black,
                       padding: EdgeInsets.all(2.0),
-                      splashColor: Colors.grey[100]
-                  ),
+                      splashColor: Colors.grey[100]),
                   Expanded(
                     child: ListView.builder(
                         scrollDirection: Axis.vertical,
