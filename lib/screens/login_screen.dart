@@ -100,11 +100,11 @@ class _MainPageState extends State<MainPage> {
                       jsonObject = json.decode(ret);
                       // userId = jsonObject["id"];
                       // print(jsonObject["accessToken"]);
-                      var jwt = jsonObject["accessToken"];
+                      var jwt = jsonObject["jwtToken"]["accessToken"];
                       storage.write(key: "jwt", value: jwt);
 
                       if (jwt == null) {
-                        newMessageText = "Incorrect Login/Password";
+                        newMessageText = "Authorization failed";
                         changeText();
                       } else {
                         jwt = jwt.split(".");
